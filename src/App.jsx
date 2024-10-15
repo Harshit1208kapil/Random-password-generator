@@ -27,7 +27,6 @@ function App() {
   }, [length, number, character, setPassword])
 
   const copyPasswordToClipboard = useCallback(() => {
-    //the text copied would always be complete text instead of 9 elements so we can slice it and then use.
     passwordRef.current?.select();
     passwordRef.current?.setSelectionRange(0, 9);
     window.navigator.clipboard.writeText(password)
@@ -36,50 +35,77 @@ function App() {
   useEffect(()=>{
     passwordGenerator()
   }, [length, number, character, passwordGenerator])
+  
   return (
     <>
-      
-      <div className='w-full max-w-md mx-auto shadow-md rounded-lg px-4 my-8 py-4 text-orange-500 bg-gray-800'>
-      <h1 className='text-4xl text-center text-white my-5'>Password Generator</h1>
-      <div className='flex shadow-lg rounded-lg overflow-hidden mb-4'>
-        <input type="text" value={password}   className='outline-none w-full py-1 px-3'  placeholder='Password' ref={passwordRef} readOnly />
-        <button className='outline-none bg-blue-700 text-white px-3 py-1 shrink-0' 
-        onClick={copyPasswordToClipboard}  >Copy</button>
-      </div>
-      <div className='flex text-sm gap-x-2'>
-      <div className='flex items-center gap-x-1'>
-        <input type="range" min={6} max={100} value={length} className='cursor-pointer' 
-        onChange={(e) => {setLength(e.target.value)}} />
-          <label>Length: {length}</label>
-      </div>
-      <div className="flex items-center gap-x-1">
-      <input
-          type="checkbox"
-          defaultChecked={number}
-          id="numberInput"
-          onChange={() => {
-              setNumber((prev) => !prev);
-          }}
-      />
-      <label htmlFor="numberInput">Numbers</label>
-      </div>
-      <div className="flex items-center gap-x-1">
-          <input
+      {/* Parent container to make it responsive */}
+      <div className='w-full max-w-md mx-auto shadow-md rounded-lg px-4 my-8 py-4 text-orange-500 bg-gray-800 sm:px-6 md:px-8 lg:px-10'>
+        <h1 className='text-4xl text-center text-white my-5'>Password Generator</h1>
+        
+        {/* Input and button wrapper */}
+        <div className='flex flex-col sm:flex-row shadow-lg rounded-lg overflow-hidden mb-4'>
+          <input 
+            type="text" 
+            value={password} 
+            className='outline-none w-full py-2 px-3 text-sm sm:text-base' 
+            placeholder='Password' 
+            ref={passwordRef} 
+            readOnly 
+          />
+          <button 
+            className='outline-none bg-blue-700 text-white px-3 py-2 shrink-0 mt-2 sm:mt-0 sm:ml-2' 
+            onClick={copyPasswordToClipboard}
+          >
+            Copy
+          </button>
+        </div>
+        
+        {/* Controls for length, numbers, characters */}
+        <div className='flex flex-col gap-4 sm:flex-row sm:gap-x-2 text-sm'>
+          
+          {/* Length slider */}
+          <div className='flex items-center gap-x-2 sm:gap-x-1'>
+            <input 
+              type="range" 
+              min={6} 
+              max={100} 
+              value={length} 
+              className='cursor-pointer' 
+              onChange={(e) => {setLength(e.target.value)}} 
+            />
+            <label>Length: {length}</label>
+          </div>
+          
+          {/* Checkbox for Numbers */}
+          <div className="flex items-center gap-x-2 sm:gap-x-1">
+            <input
+              type="checkbox"
+              defaultChecked={number}
+              id="numberInput"
+              onChange={() => {
+                setNumber((prev) => !prev);
+              }}
+            />
+            <label htmlFor="numberInput">Numbers</label>
+          </div>
+          
+          {/* Checkbox for Special Characters */}
+          <div className="flex items-center gap-x-2 sm:gap-x-1">
+            <input
               type="checkbox"
               defaultChecked={character}
               id="characterInput"
               onChange={() => {
-                  setCharacter((prev) => !prev )
+                setCharacter((prev) => !prev )
               }}
-          />
-          <label htmlFor="characterInput">Characters</label>
+            />
+            <label htmlFor="characterInput">Characters</label>
+          </div>
+          
+        </div>
       </div>
-      </div>
-      </div>
-      
-
     </>
   )
 }
 
-export default App
+export default App;
